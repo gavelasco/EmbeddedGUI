@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <ctime>
 
 #include "PlayerBlackHole.h"
 

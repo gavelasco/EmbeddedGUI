@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <ctime>
 
 #include "Arena.h"
 #include "PlayerRobot.h"

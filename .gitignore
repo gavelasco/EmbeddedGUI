@@ -1,0 +1,3 @@
+bin/Release/RobotWars
+obj/Release/*.o
+wx_pch.h.gch/Release_wx_pch_h_gch
