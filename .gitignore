@@ -1,3 +1,8 @@
 bin/Release/RobotWars
+bin/Debug/RobotWars
 obj/Release/*.o
+obj/Debug/*.o
 wx_pch.h.gch/Release_wx_pch_h_gch
+wx_pch.h.gch/Debug_wx_pch_h_gch
+RobotWars.depend
+RobotWars.cbp

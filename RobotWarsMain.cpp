@@ -164,16 +164,25 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
         Close();
     }
 
+    wxString paths[(TOTAL_ROWS * TOTAL_COLUMNS)];
     for (short int row = 0; row < TOTAL_ROWS; row++)
     {
         for (short int column = 0; column < TOTAL_COLUMNS; column++)
         {
-            wxString path(arena->getCell(row, column)->getContent()->getPathToImage().c_str(), wxConvUTF8);
-            wxBitmap image(path, wxBITMAP_TYPE_BMP);
+            paths[(row * column) + column] = wxString::FromAscii(arena->getCell(row, column)->getContent()->getPathToImage().c_str());
+        }
+    }
+
+    for (short int row = 0; row < TOTAL_ROWS; row++)
+    {
+        for (short int column = 0; column < TOTAL_COLUMNS; column++)
+        {
+//            path = wxString::FromAscii(arena->getCell(row, column)->getContent()->getPathToImage().c_str());
+            wxBitmap image(paths[(row * column) + column], wxBITMAP_TYPE_BMP);
             if (!image.Ok())
             {
                 wxString error;
-                error.Printf(wxT("Image %s did not load"), path.c_str());
+                error.Printf(wxT("Image %s did not load"), paths[(row * column) + column].c_str());
                 wxMessageBox(error);
                 Close();
             }
