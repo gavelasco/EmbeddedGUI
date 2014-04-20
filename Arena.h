@@ -34,6 +34,9 @@ class Arena
 
       void animate(void);
 
+      // FIXME - bad idea....
+      Player_Type content[TOTAL_ROWS][TOTAL_COLUMNS];
+
    private:
       Cell** group;
 

@@ -18,9 +18,8 @@
 
 #include <wx/dcbuffer.h>
 
-#define TOTAL_ROWS 14
-#define TOTAL_COLUMNS 20
-#define BITMAP_DIMENSIONS 45
+#include "PlayerRobot.h"
+#include "CustomTypes.h"
 
 //helper functions
 enum wxbuildinfoformat {
@@ -139,6 +138,7 @@ RobotWarsFrame::~RobotWarsFrame()
 
 void RobotWarsFrame::OnQuit(wxCommandEvent& event)
 {
+    delete arena;
     Close();
 }
 
@@ -158,6 +158,20 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
 {
     wxPaintDC dc(PanelArena);
 
+    wxBitmap ground(wxT("Ground.bmp"));
+    if(!ground.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: ground"));
+        Close();
+    }
+
+    wxBitmap robot1_blue(wxT("RL1Blue.bmp"));
+    if(!robot1_blue.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        Close();
+    }
+
     if (!dc.CanDrawBitmap())
     {
         wxMessageBox(wxT("ERROR"), wxT("Cannot draw bitmaps on panel"),wxICON_ERROR);
@@ -168,16 +182,18 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
     {
         for (short int column = 0; column < TOTAL_COLUMNS; column++)
         {
-            wxString path(arena->getCell(row, column)->getContent()->getPathToImage().c_str(), wxConvUTF8);
-            wxBitmap image(path, wxBITMAP_TYPE_BMP);
-            if (!image.Ok())
+
+            switch(arena->content[row][column])
             {
-                wxString error;
-                error.Printf(wxT("Image %s did not load"), path.c_str());
-                wxMessageBox(error);
-                Close();
+                case player_ground:
+                    dc.DrawBitmap(ground, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
+
+                case player_robot_blue_1:
+                    dc.DrawBitmap(robot1_blue, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
             }
-            dc.DrawBitmap(image, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+
         }
     }
 }

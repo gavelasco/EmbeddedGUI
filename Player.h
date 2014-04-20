@@ -3,15 +3,7 @@
 
 #include <string>
 
-#define OBSTACLE 0x80
-#define TRANSPORT_HOLE 0x40
-#define BLACK_HOLE 0x20
-#define GROUND 0x10
-
-#define TEAM_4 0x08
-#define TEAM_3 0x04
-#define TEAM_2 0x02
-#define TEAM_1 0x01
+#include "CustomTypes.h"
 
 using std::string;
 
@@ -19,7 +11,7 @@ class Player
 {
    public:
       Player();
-      Player(int x, int y, string path, char type);
+      Player(int x, int y, string path, Player_Type type);
       virtual ~Player();
 
       int getXCoord();
@@ -28,7 +20,7 @@ class Player
       void setYCoord(int y);
 
       string getPathToImage();
-      char getPlayerType();
+      Player_Type getPlayerType();
 
    private:
       string pathToImage;
@@ -46,7 +38,7 @@ class Player
        * team 2
        * team 1
        */
-      char playerType;
+      Player_Type playerType;
 
       int x_coord;
       int y_coord;

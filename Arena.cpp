@@ -13,9 +13,11 @@
 
 // Helper function declarations
 static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column);
+
 static void calculateNumberOfAllPlayers(int* size, int* numberOfRobots, int* numberOfObsticles,
       int* numberOfBlackHoles, int* numberOfTransportHoles, short int* percentRobot,
       short int* percentObstacle, short int* percentBlackHole, short int* percentTransportHole);
+
 static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
       int* numberOfObsticles, int* numberOfBlackHoles, int* numberOfTransportHoles);
 
@@ -25,17 +27,67 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    size = row * column;
    group = new Cell*[size];
 
+// FIXME --------------------------------
    // Create all the Cell objects and have them point to a Ground object
-   buildArenaWith(group, availablePositions, &size, row, column);
+//   buildArenaWith(group, availablePositions, &size, row, column);
+   // Build the arena with cells
+   unsigned int iterator = 0;
+   for (int _row = 0; _row < row; _row++)
+   {
+      for (int _col = 0; _col < column; _col++)
+      {
+         group[iterator] = new Cell(_row, _col);
+         iterator++;
+         content[_row][_col] = player_ground;
+      }
+   }
+
+   // Initialize each cell to point to ground. Empty arena.
+   for (iterator = 0; iterator < (unsigned int) size; iterator++)
+   {
+      availablePositions[iterator] = true;
+      group[iterator]->setContent(
+            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(),
+                  "Ground.bmp", player_ground));
+   }
+//-----------------------------------------
 
    // Calculate the number of all players with the percentages given
    calculateNumberOfAllPlayers(&size, &numberOfRobots, &numberOfObsticles, &numberOfBlackHoles,
          &numberOfTransportHoles, &percentRobot, &percentObstacle, &percentBlackHole,
          &percentTransportHole);
 
+// FIXME --------------------
    // Populate arena with the number of each Player child object
-   populateArena(group, availablePositions, &size, &numberOfRobots, &numberOfObsticles,
-         &numberOfBlackHoles, &numberOfTransportHoles);
+//   populateArena(group, availablePositions, &size, &numberOfRobots, &numberOfObsticles,
+//         &numberOfBlackHoles, &numberOfTransportHoles);
+   srand((unsigned int) time(NULL));
+
+   int robots = numberOfRobots;
+//   int obsticles = (*numberOfObsticles);
+//   int blackHoles = (*numberOfBlackHoles);
+//   int transportHoles = (*numberOfTransportHoles);
+
+// TODO - This while is supposed to be for all the players but for now, its only robots
+//   while(sumOfPercentPlayers)
+   while (robots)
+   {
+      unsigned int cellNumber = (unsigned int) (rand() % (size));
+      if (robots && (true == availablePositions[cellNumber]))
+      {
+         // TODO - This is where the logic goes to figure out the different teams and stuff.
+         // Right now it is only one type of robot
+         group[cellNumber]->deleteContent();
+         group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+            group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+         robots--;
+         availablePositions[cellNumber] = false;
+         content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
+      }
+   }
+//-----------------------------------------------
+
+
 }
 
 Arena::~Arena()
@@ -106,7 +158,7 @@ void Arena::setCellContentToPlayer(int row, int column, Player* player)
 
 void Arena::setCellContentToGround(int row, int column)
 {
-   group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, ".", GROUND));
+   group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, ".", player_ground));
 }
 
 void Arena::animate(void)
@@ -144,7 +196,7 @@ static void buildArenaWith(Cell** group, bool* availablePositions, int* size, in
       availablePositions[iterator] = true;
       group[iterator]->setContent(
             new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(),
-                  "Ground.bmp", GROUND));
+                  "Ground.bmp", player_ground));
    }
 }
 
@@ -188,7 +240,7 @@ static void populateArena(Cell** group, bool* availablePositions, int* size, int
          group[cellNumber]->deleteContent();
          group[cellNumber]->setContent(
                new PlayerRobot(group[cellNumber]->getXCordinate(),
-                     group[cellNumber]->getYCordinate(), "RL1Blue.bmp", TEAM_1, 1, 1, 1, 1));
+                     group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
          robots--;
          availablePositions[cellNumber] = false;
       }

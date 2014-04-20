@@ -4,7 +4,7 @@ Player::Player()
 {
 }
 
-Player::Player(int x, int y, string path, char type)
+Player::Player(int x, int y, string path, Player_Type type)
 {
    x_coord = x;
    y_coord = y;
@@ -32,7 +32,7 @@ int Player::getYCoord()
    return y_coord;
 }
 
-char Player::getPlayerType()
+Player_Type Player::getPlayerType()
 {
    return playerType;
 }

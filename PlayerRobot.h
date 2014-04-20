@@ -4,13 +4,11 @@
 #include "Player.h"
 #include "Arena.h"
 
-
-
 class PlayerRobot: public Player
 {
    public:
       PlayerRobot();
-      PlayerRobot(int x, int y, string color, char type, int powerLevel, int feed, int mate, int life);
+      PlayerRobot(int x, int y, string color, Player_Type type, int powerLevel, int feed, int mate, int life);
 
       int getPower();
       int getTimeToFeed();
