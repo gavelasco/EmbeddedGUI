@@ -78,11 +78,38 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          // TODO - This is where the logic goes to figure out the different teams and stuff.
          // Right now it is only one type of robot
          group[cellNumber]->deleteContent();
-         group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-            group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+         unsigned int robotTeam = (unsigned int) (rand() % 4);
+         switch (robotTeam)
+         {
+             case player_robot_blue_1:
+                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+                    group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
+                break;
+
+            case player_robot_green_1:
+                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+                    group[cellNumber]->getYCordinate(), "RL1Green.bmp", player_robot_green_1, 1, 1, 1, 1));
+                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_green_1;
+                break;
+
+            case player_robot_red_1:
+                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+                    group[cellNumber]->getYCordinate(), "RL1Red.bmp", player_robot_red_1, 1, 1, 1, 1));
+                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_red_1;
+                break;
+
+            case player_robot_yellow_1:
+                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+                    group[cellNumber]->getYCordinate(), "RL1Yellow.bmp", player_robot_yellow_1, 1, 1, 1, 1));
+                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_yellow_1;
+                break;
+         }
+//         group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
+//            group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
          robots--;
          availablePositions[cellNumber] = false;
-         content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
+//         content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
       }
    }
 //-----------------------------------------------

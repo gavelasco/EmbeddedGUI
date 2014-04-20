@@ -8,8 +8,7 @@ PlayerRobot::PlayerRobot()
 }
 
 PlayerRobot::PlayerRobot(int x, int y, string color, Player_Type type, int powerLevel, int feed, int mate,
-      int life) :
-      Player(x, y, color, type)
+      int life) : Player(x, y, color, type)
 {
    power = powerLevel;
    timeToFeed = feed;

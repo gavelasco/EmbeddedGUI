@@ -172,6 +172,27 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
         Close();
     }
 
+    wxBitmap robot1_red(wxT("RL1Red.bmp"));
+    if(!robot1_blue.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        Close();
+    }
+
+    wxBitmap robot1_yellow(wxT("RL1Yellow.bmp"));
+    if(!robot1_blue.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        Close();
+    }
+
+    wxBitmap robot1_green(wxT("RL1Green.bmp"));
+    if(!robot1_blue.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        Close();
+    }
+
     if (!dc.CanDrawBitmap())
     {
         wxMessageBox(wxT("ERROR"), wxT("Cannot draw bitmaps on panel"),wxICON_ERROR);
@@ -191,6 +212,18 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
 
                 case player_robot_blue_1:
                     dc.DrawBitmap(robot1_blue, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
+
+                case player_robot_red_1:
+                    dc.DrawBitmap(robot1_red, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
+
+                case player_robot_yellow_1:
+                    dc.DrawBitmap(robot1_yellow, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
+
+                case player_robot_green_1:
+                    dc.DrawBitmap(robot1_green, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
                     break;
             }
 
