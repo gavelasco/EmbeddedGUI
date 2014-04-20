@@ -79,6 +79,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          // Right now it is only one type of robot
          group[cellNumber]->deleteContent();
          unsigned int robotTeam = (unsigned int) (rand() % 4);
+         robotTeam *= 4;
          switch (robotTeam)
          {
              case player_robot_blue_1:
@@ -197,8 +198,11 @@ void Arena::animate(void)
          // FIXME - this is a bad idea, but I know that right now there are only robots
          // inside.
          PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
+         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = moveBot->getPlayerType();
+
          availablePositions[iterator] = true;
          availablePositions[moveBot->move(this)] = false;
+         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = moveBot->getPlayerType();
          break;  // FIXME - this is hella wrong.
       }
    }

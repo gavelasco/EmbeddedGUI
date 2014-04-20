@@ -60,6 +60,8 @@ class RobotWarsFrame: public wxFrame
         void OnTimer(wxTimerEvent& event);
         static const long REFRESH_TIMER_ID;
 
+        void DrawBoard();
+
         DECLARE_EVENT_TABLE()
 };
 

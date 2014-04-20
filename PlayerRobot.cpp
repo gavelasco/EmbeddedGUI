@@ -53,7 +53,7 @@ int PlayerRobot::move(Arena* arena)
    this->decrementLife();
 
    // TODO - figure out move logic.
-   // This will try to reproduce first, then feed, then move
+   // This will try to reproduce first, then attack, then move
    int prev_x;
    int prev_y;
    int moveTo_x;
@@ -115,6 +115,7 @@ int PlayerRobot::move(Arena* arena)
       {
          moveTo_y--;
 
+         // wrap around
          if(0 > moveTo_y)
          {
             moveTo_y = (arena->getNumberOfColumns() - 1);

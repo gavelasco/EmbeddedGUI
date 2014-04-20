@@ -150,11 +150,18 @@ void RobotWarsFrame::OnAbout(wxCommandEvent& event)
 
 void RobotWarsFrame::OnTimer(wxTimerEvent& event)
 {
-    // animate and refresh
     wxMessageBox(wxT("word"));
+    arena->animate();
+    RobotWarsFrame::DrawBoard();
 }
 
 void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
+{
+    RobotWarsFrame::DrawBoard();
+    refreshTimer.Start(1000, wxTIMER_CONTINUOUS);
+}
+
+void RobotWarsFrame::DrawBoard()
 {
     wxPaintDC dc(PanelArena);
 
