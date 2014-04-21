@@ -72,7 +72,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //         &numberOfBlackHoles, &numberOfTransportHoles);
    srand((unsigned int) time(NULL));
 
-   std::random_shuffle(&moveOrder[0], &moveOrder[size - 1]);
+   std::random_shuffle(&moveOrder[0], &moveOrder[size]);
 
    short int robots = numberOfRobots;
    short int obstacles = numberOfObsticles;
@@ -80,7 +80,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int transportHoles = (*numberOfTransportHoles);
 
     robots = 1;
-    obstacles = 1;
+    obstacles = 50;
 
     iterator = 0;
    while (robots || obstacles)
@@ -90,9 +90,16 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          // TODO - This is where the logic goes to figure out the different teams and stuff.
          // Right now it is only one type of robot
          group[moveOrder[iterator]]->deleteContent();
-         unsigned short int robotTeam = (unsigned int) (rand() % 4);
-         robotTeam *= 4;
-         switch (robotTeam)
+//         unsigned short int robotTeam = (unsigned int) (rand() % 4);
+//         robotTeam *= 4;
+
+         char team[] = {player_robot_blue_1,
+                         player_robot_green_1,
+                         player_robot_red_1,
+                         player_robot_yellow_1};
+         std::random_shuffle(&team[0], &team[4]);
+
+         switch (team[0])
          {
              case player_robot_blue_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),

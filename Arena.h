@@ -7,8 +7,6 @@
 
 #include "Cell.h"
 
-#define MAX_AVAILABLE_SIZE (255)
-
 using std::vector;
 
 class Arena
@@ -47,7 +45,7 @@ class Arena
       int numberOfTransportHoles;
 
       char availablePositions[MAX_AVAILABLE_SIZE];
-      char moveOrder[MAX_AVAILABLE_SIZE];
+      short int moveOrder[MAX_AVAILABLE_SIZE];
 };
 
 #endif /* ARENA_H_ */

@@ -3,6 +3,7 @@
 
 #define TOTAL_ROWS 14
 #define TOTAL_COLUMNS 20
+#define MAX_AVAILABLE_SIZE (TOTAL_ROWS * TOTAL_COLUMNS)
 #define BITMAP_DIMENSIONS 45
 
 typedef enum
