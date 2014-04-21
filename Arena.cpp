@@ -23,8 +23,8 @@ enum
 // Helper function declarations
 //static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column);
 
-static void calculateNumberOfAllPlayers(short int* size, int* numberOfRobots, int* numberOfObsticles,
-      int* numberOfBlackHoles, int* numberOfTransportHoles, short int* percentRobot,
+static void calculateNumberOfAllPlayers(short int* size, short int* numberOfRobots, short int* numberOfObsticles,
+      short int* numberOfBlackHoles, short int* numberOfTransportHoles, short int* percentRobot,
       short int* percentObstacle, short int* percentBlackHole, short int* percentTransportHole);
 
 //static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
@@ -79,7 +79,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    robots = 1;
+    robots = 5;
     obstacles = 50;
 
     iterator = 0;
@@ -221,37 +221,26 @@ void Arena::setCellContentToGround(int row, int column)
 
 void Arena::animate(void)
 {
-   for (int iterator = 0; iterator < size; iterator++)
+   for (short int iterator = 0; iterator < size; iterator++)
    {
       if (canMove == availablePositions[iterator])
       {
-         // FIXME - this is a bad idea, but I know that right now there are only robots
-         // inside.
          PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
          content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
 
          availablePositions[iterator] = available;
-         availablePositions[moveBot->move(this)] = canMove;
+         availablePositions[moveBot->move(this)] = hasMoved;
          content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
-         break;  // FIXME - this is hella wrong.
       }
    }
 
-//    for (int row = 0; row < Arena::getNumberOfRows(); row++)
-//    {
-//        for (int column = 0; column < Arena::getNumberOfColumns(); column++)
-//        {
-//            if ((player_robot_blue_1 <= content[row][column]) && (player_robot_max > content[row][column]))
-//            {
-//                PlayerRobot* moveBot = (PlayerRobot*) Arena::getCell(row, column)->getContent();
-//                content[row][column] = player_ground;
-//
-//                moveBot->move(this);
-////                content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
-//                content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
-//            }
-//        }
-//    }
+   for (short int iterator = 0; iterator < size; iterator++)
+   {
+       if (availablePositions[iterator] == hasMoved)
+       {
+           availablePositions[iterator] = canMove;
+       }
+   }
 }
 
 //static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column)
@@ -276,8 +265,8 @@ void Arena::animate(void)
 //   }
 //}
 
-static void calculateNumberOfAllPlayers(short int* size, int* numberOfRobots, int* numberOfObsticles,
-      int* numberOfBlackHoles, int* numberOfTransportHoles, short int* percentRobot,
+static void calculateNumberOfAllPlayers(short int* size, short int* numberOfRobots, short int* numberOfObsticles,
+      short int* numberOfBlackHoles, short int* numberOfTransportHoles, short int* percentRobot,
       short int* percentObstacle, short int* percentBlackHole, short int* percentTransportHole)
 {
    int sumOfPercentPlayers = (*percentRobot) + (*percentObstacle) + (*percentBlackHole)

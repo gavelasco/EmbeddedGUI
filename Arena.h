@@ -39,10 +39,10 @@ class Arena
 
       short int size;
 
-      int numberOfRobots;
-      int numberOfObsticles;
-      int numberOfBlackHoles;
-      int numberOfTransportHoles;
+      short int numberOfRobots;
+      short int numberOfObsticles;
+      short int numberOfBlackHoles;
+      short int numberOfTransportHoles;
 
       char availablePositions[MAX_AVAILABLE_SIZE];
       short int moveOrder[MAX_AVAILABLE_SIZE];
