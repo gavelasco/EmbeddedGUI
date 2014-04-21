@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 #include "PlayerRobot.h"
 
@@ -7,8 +8,8 @@ PlayerRobot::PlayerRobot()
 {
 }
 
-PlayerRobot::PlayerRobot(int x, int y, Player_Type type, int powerLevel, int feed, int mate,
-      int life) : Player(x, y, type)
+PlayerRobot::PlayerRobot(short int x, short int y, Player_Type type, short int powerLevel,
+                  short int feed, short int mate, short int life) : Player(x, y, type)
 {
    power = powerLevel;
    timeToFeed = feed;
@@ -52,83 +53,149 @@ int PlayerRobot::move(Arena* arena)
    // TODO - also decrement other times
 //   this->decrementLife();
 
-   // TODO - figure out move logic.
-   // This will try to reproduce first, then attack, then move
-   int prev_x;
-   int prev_y;
-   int moveTo_x;
-   int moveTo_y;
+   // This will try to reproduce (0x03) first, then attack (0x02), then move (0x01),
+   // then do nothing (0x00)
+   short int current_x;
+   short int current_y;
+   short int next_x;
+   short int next_y;
 
-   moveTo_x = prev_x = this->getXCoord();
-   moveTo_y = prev_y = this->getYCoord();
+   next_x = current_x = this->getXCoord();
+   next_y = current_y = this->getYCoord();
 
-
-   // TODO - this will probably change into a switch statement so that each
-   // priority of move can be tested.
-//   if (movePriority_reproduce == movePriority)
-   if(true)
+   enum
    {
-      srand((unsigned int)time(NULL));
+       stay = 0x00,
+       north = 0x01,
+       south = 0x02,
+       east = 0x04,
+       west = 0x08,
+       doNothing = 0x10,
+       move = 0x20,
+       attack = 0x40,
+       reproduce = 0x80
+   };
 
-      // TODO - for now, the robots will just move randomly
-      int randNum = rand() % 4;
+   char moveDirection[] = {north, south, east, west};
+   std::random_shuffle(&moveDirection[0], &moveDirection[4]);
+   char moveTo = stay | doNothing; // least sig bytes = direction, most sig bytes = action
 
-      //Move north
-//      if (TEAM_1
-//            & arena->getCell((this->getXCoord() + 1), this->getYCoord())->getContent()->getPlayerType())
-      if(0 == randNum)
-      {
-         moveTo_x--;
+   for (char look = 0; look < 4; look++)
+   {
+        Player_Type peekType;
 
-         // Wrap around
-         if(0 > moveTo_x)
-         {
-            moveTo_x = arena->getNumberOfRows() - 1;
-         }
-      }
+        if (moveDirection[look] == north)
+        {
+            next_x--;
+            if (0 > next_x)
+                next_x = arena->getNumberOfRows() - 1;
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-      // move south
-      if(1 == randNum)
-      {
-         moveTo_x++;
+            // comparison is done only on level 1 of each color
+            // Each if increases in priority
+            // move
+            if (peekType & player_ground)
+                moveTo = moveDirection[look] | move;
+            // Attack regarless of level
+            // todo implement attack and reproduce
+//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+            // reproduce
+//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+        }
 
-         // Wrap around
-         if((arena->getNumberOfRows() - 1) < moveTo_x)
-         {
-            moveTo_x = 0;
-         }
-      }
+        if (moveDirection[look] == south)
+        {
+            next_x++;
+            if((arena->getNumberOfRows() - 1) < next_x)
+                next_x = 0;
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-      // move east
-      if(2 == randNum)
-      {
-         moveTo_y++;
+            // comparison is done only on level 1 of each color
+            // Each if increases in priority
+            // move
+            if (peekType & player_ground)
+                moveTo = moveDirection[look] | move;
+            // Attack regarless of level
+            // todo - implement attack and reproduce
+//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+//            // reproduce
+//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+        }
 
-         if((arena->getNumberOfColumns() - 1) < moveTo_y)
-         {
-            moveTo_y = 0;
-         }
-      }
+        if (moveDirection[look] == east)
+        {
+            next_y++;
+            if((arena->getNumberOfColumns() - 1) < next_y)
+                next_y = 0;
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-      // move west
-      if(3 == randNum)
-      {
-         moveTo_y--;
+            // comparison is done only on level 1 of each color
+            // Each if increases in priority
+            // move
+            if (peekType & player_ground)
+                moveTo = moveDirection[look] | move;
+            // Attack regarless of level
+            // todo - implement attack and reproduce
+//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+//            // reproduce
+//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+        }
 
-         // wrap around
-         if(0 > moveTo_y)
-         {
-            moveTo_y = (arena->getNumberOfColumns() - 1);
-         }
-      }
+        if (moveDirection[look] == west)
+        {
+            next_y--;
+            if(0 > next_y)
+                next_y = (arena->getNumberOfColumns() - 1);
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
+
+            // comparison is done only on level 1 of each color
+            // Each if increases in priority
+            // move
+            if (peekType & player_ground)
+                moveTo = moveDirection[look] | move;
+            // Attack regarless of level
+            // todo - implement attack and reproduce
+//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+//            // reproduce
+//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+        }
+        next_x = current_x;
+        next_y = current_y;
    }
 
-   arena->setCellContentToPlayer(moveTo_x, moveTo_y, this);
-   arena->setCellContentToGround(prev_x, prev_y);
+    if ((moveTo & move) == move)
+    {
+        if ((moveTo & north) == north)
+        {
+            next_x--;
+            if (0 > next_x) next_x = arena->getNumberOfRows() - 1;
+        }
 
-   this->setXCoord(moveTo_x);
-   this->setYCoord(moveTo_y);
+        if ((moveTo & south) == south)
+        {
+            next_x++;
+            if((arena->getNumberOfRows() - 1) < next_x) next_x = 0;
+        }
 
-   return arena->getCellNumber(moveTo_x, moveTo_y);
+        if ((moveTo & east) == east)
+        {
+            next_y++;
+            if((arena->getNumberOfColumns() - 1) < next_y) next_y = 0;
+        }
+
+        if ((moveTo & west) == west)
+        {
+            next_y--;
+            if(0 > next_y) next_y = (arena->getNumberOfColumns() - 1);
+        }
+    }
+
+   arena->setCellContentToPlayer(next_x, next_y, this);
+   arena->setCellContentToGround(current_x, current_y);
+
+   this->setXCoord(next_x);
+   this->setYCoord(next_y);
+
+   return arena->getCellNumber(next_x, next_y);
 }
 
