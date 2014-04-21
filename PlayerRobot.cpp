@@ -7,8 +7,8 @@ PlayerRobot::PlayerRobot()
 {
 }
 
-PlayerRobot::PlayerRobot(int x, int y, string color, Player_Type type, int powerLevel, int feed, int mate,
-      int life) : Player(x, y, color, type)
+PlayerRobot::PlayerRobot(int x, int y, Player_Type type, int powerLevel, int feed, int mate,
+      int life) : Player(x, y, type)
 {
    power = powerLevel;
    timeToFeed = feed;
@@ -50,7 +50,7 @@ void PlayerRobot::decrementLife()
 int PlayerRobot::move(Arena* arena)
 {
    // TODO - also decrement other times
-   this->decrementLife();
+//   this->decrementLife();
 
    // TODO - figure out move logic.
    // This will try to reproduce first, then attack, then move

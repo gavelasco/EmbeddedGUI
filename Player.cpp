@@ -4,22 +4,15 @@ Player::Player()
 {
 }
 
-Player::Player(int x, int y, string path, Player_Type type)
+Player::Player(int x, int y, Player_Type type)
 {
    x_coord = x;
    y_coord = y;
    playerType = type;
-
-   pathToImage = path;
 }
 
 Player::~Player()
 {
-}
-
-string Player::getPathToImage()
-{
-   return pathToImage;
 }
 
 int Player::getXCoord()

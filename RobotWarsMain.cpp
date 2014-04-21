@@ -150,7 +150,6 @@ void RobotWarsFrame::OnAbout(wxCommandEvent& event)
 
 void RobotWarsFrame::OnTimer(wxTimerEvent& event)
 {
-    wxMessageBox(wxT("word"));
     arena->animate();
     RobotWarsFrame::DrawBoard();
 }

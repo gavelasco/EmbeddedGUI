@@ -47,8 +47,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    {
       availablePositions[iterator] = true;
       group[iterator]->setContent(
-            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(),
-                  "Ground.bmp", player_ground));
+            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(), player_ground));
    }
 //-----------------------------------------
 
@@ -70,6 +69,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 
 // TODO - This while is supposed to be for all the players but for now, its only robots
 //   while(sumOfPercentPlayers)
+    robots = 1;
    while (robots)
    {
       unsigned int cellNumber = (unsigned int) (rand() % (size));
@@ -84,25 +84,25 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          {
              case player_robot_blue_1:
                 group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+                    group[cellNumber]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
                 content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
                 break;
 
             case player_robot_green_1:
                 group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), "RL1Green.bmp", player_robot_green_1, 1, 1, 1, 1));
+                    group[cellNumber]->getYCordinate(), player_robot_green_1, 1, 1, 1, 1));
                 content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_green_1;
                 break;
 
             case player_robot_red_1:
                 group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), "RL1Red.bmp", player_robot_red_1, 1, 1, 1, 1));
+                    group[cellNumber]->getYCordinate(), player_robot_red_1, 1, 1, 1, 1));
                 content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_red_1;
                 break;
 
             case player_robot_yellow_1:
                 group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), "RL1Yellow.bmp", player_robot_yellow_1, 1, 1, 1, 1));
+                    group[cellNumber]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 1));
                 content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_yellow_1;
                 break;
          }
@@ -186,7 +186,7 @@ void Arena::setCellContentToPlayer(int row, int column, Player* player)
 
 void Arena::setCellContentToGround(int row, int column)
 {
-   group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, ".", player_ground));
+   group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, player_ground));
 }
 
 void Arena::animate(void)
@@ -198,14 +198,30 @@ void Arena::animate(void)
          // FIXME - this is a bad idea, but I know that right now there are only robots
          // inside.
          PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
-         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = moveBot->getPlayerType();
+         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
 
          availablePositions[iterator] = true;
          availablePositions[moveBot->move(this)] = false;
-         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = moveBot->getPlayerType();
+         content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
          break;  // FIXME - this is hella wrong.
       }
    }
+
+//    for (int row = 0; row < Arena::getNumberOfRows(); row++)
+//    {
+//        for (int column = 0; column < Arena::getNumberOfColumns(); column++)
+//        {
+//            if ((player_robot_blue_1 <= content[row][column]) && (player_robot_max > content[row][column]))
+//            {
+//                PlayerRobot* moveBot = (PlayerRobot*) Arena::getCell(row, column)->getContent();
+//                content[row][column] = player_ground;
+//
+//                moveBot->move(this);
+////                content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
+//                content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
+//            }
+//        }
+//    }
 }
 
 static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column)
@@ -226,8 +242,7 @@ static void buildArenaWith(Cell** group, bool* availablePositions, int* size, in
    {
       availablePositions[iterator] = true;
       group[iterator]->setContent(
-            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(),
-                  "Ground.bmp", player_ground));
+            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(), player_ground));
    }
 }
 
@@ -271,7 +286,7 @@ static void populateArena(Cell** group, bool* availablePositions, int* size, int
          group[cellNumber]->deleteContent();
          group[cellNumber]->setContent(
                new PlayerRobot(group[cellNumber]->getXCordinate(),
-                     group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+                     group[cellNumber]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
          robots--;
          availablePositions[cellNumber] = false;
       }

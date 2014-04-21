@@ -23,6 +23,7 @@ typedef enum
     player_robot_yellow_2,
     player_robot_yellow_3,
     player_robot_yellow_4,
+    player_robot_max,
     player_ground
 } Player_Type;
 

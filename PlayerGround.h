@@ -7,7 +7,7 @@ class PlayerGround: public Player
 {
    public:
       PlayerGround();
-      PlayerGround(int x, int y, string path, Player_Type type);
+      PlayerGround(int x, int y, Player_Type type);
       virtual ~PlayerGround();
 };
 
