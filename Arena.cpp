@@ -8,7 +8,7 @@
 #include "Arena.h"
 #include "PlayerRobot.h"
 #include "PlayerGround.h"
-//#include "PlayerObstacle.h"
+#include "PlayerObstacle.h"
 //#include "PlayerBlackHole.h"
 //#include "PlayerTransportHole.h"
 
@@ -40,10 +40,10 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    // Create all the Cell objects and have them point to a Ground object
 //   buildArenaWith(group, availablePositions, &size, row, column);
    // Build the arena with cells
-   int iterator = 0;
-   for (int _row = 0; _row < row; _row++)
+   short int iterator = 0;
+   for (short int _row = 0; _row < row; _row++)
    {
-      for (int _col = 0; _col < column; _col++)
+      for (short int _col = 0; _col < column; _col++)
       {
          group[iterator] = new Cell(_row, _col);
          iterator++;
@@ -52,7 +52,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    }
 
    // Initialize each cell to point to ground. Empty arena.
-   for (iterator = 0; iterator < (unsigned int) size; iterator++)
+   for (iterator = 0; iterator < size; iterator++)
    {
       availablePositions[iterator] = available;
       moveOrder[iterator] = iterator;
@@ -74,25 +74,23 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 
    std::random_shuffle(&moveOrder[0], &moveOrder[size - 1]);
 
-   int robots = numberOfRobots;
-   int obstacles = numberOfObsticles;
+   short int robots = numberOfRobots;
+   short int obstacles = numberOfObsticles;
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
     robots = 1;
-    obstacles = 0;
+    obstacles = 1;
 
     iterator = 0;
-   while (robots)
+   while (robots || obstacles)
    {
-      unsigned int cellNumber = (unsigned int) (rand() % (size));
       if (robots && (available == availablePositions[moveOrder[iterator]]))
       {
          // TODO - This is where the logic goes to figure out the different teams and stuff.
          // Right now it is only one type of robot
-//         group[cellNumber]->deleteContent();
          group[moveOrder[iterator]]->deleteContent();
-         unsigned int robotTeam = (unsigned int) (rand() % 4);
+         unsigned short int robotTeam = (unsigned int) (rand() % 4);
          robotTeam *= 4;
          switch (robotTeam)
          {
@@ -120,11 +118,20 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
                 break;
          }
-//         group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-//            group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
+
          robots--;
          availablePositions[moveOrder[iterator]] = canMove;
-//         content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
+      }
+
+      if (obstacles && (available == availablePositions[moveOrder[iterator]]))
+      {
+          group[moveOrder[iterator]]->deleteContent();
+          group[moveOrder[iterator]]->setContent(new PlayerObstacle(group[moveOrder[iterator]]->getXCordinate(),
+              group[moveOrder[iterator]]->getYCordinate(), player_obstacle));
+          content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_obstacle;
+
+          obstacles--;
+          availablePositions[moveOrder[iterator]] = unavailable;
       }
 
       iterator++;
