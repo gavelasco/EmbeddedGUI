@@ -34,20 +34,20 @@ class Arena
 
       void animate(void);
 
-      // FIXME - bad idea....
       Player_Type content[TOTAL_ROWS][TOTAL_COLUMNS];
 
    private:
       Cell** group;
 
-      int size;
+      short int size;
 
       int numberOfRobots;
       int numberOfObsticles;
       int numberOfBlackHoles;
       int numberOfTransportHoles;
 
-      bool availablePositions[MAX_AVAILABLE_SIZE];
+      char availablePositions[MAX_AVAILABLE_SIZE];
+      char moveOrder[MAX_AVAILABLE_SIZE];
 };
 
 #endif /* ARENA_H_ */

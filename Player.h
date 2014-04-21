@@ -1,11 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include <string>
-
 #include "CustomTypes.h"
-
-using std::string;
 
 class Player
 {

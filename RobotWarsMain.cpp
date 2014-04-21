@@ -123,7 +123,7 @@ RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(th
     //*)
 
     short int percentRobot = 20;
-    short int percentObstacle = 0;
+    short int percentObstacle = 5;
     short int percentBlackHole = 0;
     short int percentTransportHole = 0;
 
@@ -171,6 +171,13 @@ void RobotWarsFrame::DrawBoard()
         Close();
     }
 
+    wxBitmap obstacle(wxT("Obstacle.bmp"));
+    if(!ground.Ok())
+    {
+        wxMessageBox(wxT("Failed to load bitmap: obstacle"));
+        Close();
+    }
+
     wxBitmap robot1_blue(wxT("RL1Blue.bmp"));
     if(!robot1_blue.Ok())
     {
@@ -181,21 +188,21 @@ void RobotWarsFrame::DrawBoard()
     wxBitmap robot1_red(wxT("RL1Red.bmp"));
     if(!robot1_blue.Ok())
     {
-        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        wxMessageBox(wxT("Failed to load bitmap: rl1red"));
         Close();
     }
 
     wxBitmap robot1_yellow(wxT("RL1Yellow.bmp"));
     if(!robot1_blue.Ok())
     {
-        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        wxMessageBox(wxT("Failed to load bitmap: rl1yellow"));
         Close();
     }
 
     wxBitmap robot1_green(wxT("RL1Green.bmp"));
     if(!robot1_blue.Ok())
     {
-        wxMessageBox(wxT("Failed to load bitmap: rl1blue"));
+        wxMessageBox(wxT("Failed to load bitmap: rl1green"));
         Close();
     }
 
@@ -214,6 +221,10 @@ void RobotWarsFrame::DrawBoard()
             {
                 case player_ground:
                     dc.DrawBitmap(ground, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
+                    break;
+
+                case player_obstacle:
+                    dc.DrawBitmap(obstacle, wxCoord(column * BITMAP_DIMENSIONS), wxCoord(row * BITMAP_DIMENSIONS), false);
                     break;
 
                 case player_robot_blue_1:

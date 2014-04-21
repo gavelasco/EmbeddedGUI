@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
+#include <algorithm>
 
 #include "Arena.h"
 #include "PlayerRobot.h"
@@ -11,15 +12,23 @@
 //#include "PlayerBlackHole.h"
 //#include "PlayerTransportHole.h"
 
-// Helper function declarations
-static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column);
+enum
+{
+    unavailable,
+    available,
+    canMove,
+    hasMoved
+};
 
-static void calculateNumberOfAllPlayers(int* size, int* numberOfRobots, int* numberOfObsticles,
+// Helper function declarations
+//static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column);
+
+static void calculateNumberOfAllPlayers(short int* size, int* numberOfRobots, int* numberOfObsticles,
       int* numberOfBlackHoles, int* numberOfTransportHoles, short int* percentRobot,
       short int* percentObstacle, short int* percentBlackHole, short int* percentTransportHole);
 
-static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
-      int* numberOfObsticles, int* numberOfBlackHoles, int* numberOfTransportHoles);
+//static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
+//      int* numberOfObsticles, int* numberOfBlackHoles, int* numberOfTransportHoles);
 
 Arena::Arena(short int row, short int column, short int percentRobot, short int percentObstacle,
       short int percentBlackHole, short int percentTransportHole)
@@ -31,7 +40,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    // Create all the Cell objects and have them point to a Ground object
 //   buildArenaWith(group, availablePositions, &size, row, column);
    // Build the arena with cells
-   unsigned int iterator = 0;
+   int iterator = 0;
    for (int _row = 0; _row < row; _row++)
    {
       for (int _col = 0; _col < column; _col++)
@@ -45,7 +54,8 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    // Initialize each cell to point to ground. Empty arena.
    for (iterator = 0; iterator < (unsigned int) size; iterator++)
    {
-      availablePositions[iterator] = true;
+      availablePositions[iterator] = available;
+      moveOrder[iterator] = iterator;
       group[iterator]->setContent(
             new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(), player_ground));
    }
@@ -62,56 +72,62 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //         &numberOfBlackHoles, &numberOfTransportHoles);
    srand((unsigned int) time(NULL));
 
+   std::random_shuffle(&moveOrder[0], &moveOrder[size - 1]);
+
    int robots = numberOfRobots;
-//   int obsticles = (*numberOfObsticles);
+   int obstacles = numberOfObsticles;
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-// TODO - This while is supposed to be for all the players but for now, its only robots
-//   while(sumOfPercentPlayers)
     robots = 1;
+    obstacles = 0;
+
+    iterator = 0;
    while (robots)
    {
       unsigned int cellNumber = (unsigned int) (rand() % (size));
-      if (robots && (true == availablePositions[cellNumber]))
+      if (robots && (available == availablePositions[moveOrder[iterator]]))
       {
          // TODO - This is where the logic goes to figure out the different teams and stuff.
          // Right now it is only one type of robot
-         group[cellNumber]->deleteContent();
+//         group[cellNumber]->deleteContent();
+         group[moveOrder[iterator]]->deleteContent();
          unsigned int robotTeam = (unsigned int) (rand() % 4);
          robotTeam *= 4;
          switch (robotTeam)
          {
              case player_robot_blue_1:
-                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
-                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
+                group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
+                content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_blue_1;
                 break;
 
             case player_robot_green_1:
-                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), player_robot_green_1, 1, 1, 1, 1));
-                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_green_1;
+                group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 1));
+                content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_green_1;
                 break;
 
             case player_robot_red_1:
-                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), player_robot_red_1, 1, 1, 1, 1));
-                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_red_1;
+                group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 1));
+                content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_red_1;
                 break;
 
             case player_robot_yellow_1:
-                group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
-                    group[cellNumber]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 1));
-                content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_yellow_1;
+                group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 1));
+                content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
                 break;
          }
 //         group[cellNumber]->setContent(new PlayerRobot(group[cellNumber]->getXCordinate(),
 //            group[cellNumber]->getYCordinate(), "RL1Blue.bmp", player_robot_blue_1, 1, 1, 1, 1));
          robots--;
-         availablePositions[cellNumber] = false;
+         availablePositions[moveOrder[iterator]] = canMove;
 //         content[group[cellNumber]->getXCordinate()][group[cellNumber]->getYCordinate()] = player_robot_blue_1;
       }
+
+      iterator++;
    }
 //-----------------------------------------------
 
@@ -193,15 +209,15 @@ void Arena::animate(void)
 {
    for (int iterator = 0; iterator < size; iterator++)
    {
-      if (!availablePositions[iterator])
+      if (canMove == availablePositions[iterator])
       {
          // FIXME - this is a bad idea, but I know that right now there are only robots
          // inside.
          PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
          content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
 
-         availablePositions[iterator] = true;
-         availablePositions[moveBot->move(this)] = false;
+         availablePositions[iterator] = available;
+         availablePositions[moveBot->move(this)] = canMove;
          content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
          break;  // FIXME - this is hella wrong.
       }
@@ -224,29 +240,29 @@ void Arena::animate(void)
 //    }
 }
 
-static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column)
-{
-   // Build the arena with cells
-   unsigned int iterator = 0;
-   for (int _row = 0; _row < row; _row++)
-   {
-      for (int _col = 0; _col < column; _col++)
-      {
-         group[iterator] = new Cell(_row, _col);
-         iterator++;
-      }
-   }
+//static void buildArenaWith(Cell** group, bool* availablePositions, int* size, int row, int column)
+//{
+//   // Build the arena with cells
+//   unsigned int iterator = 0;
+//   for (int _row = 0; _row < row; _row++)
+//   {
+//      for (int _col = 0; _col < column; _col++)
+//      {
+//         group[iterator] = new Cell(_row, _col);
+//         iterator++;
+//      }
+//   }
+//
+//   // Initialize each cell to point to ground. Empty arena.
+//   for (iterator = 0; iterator < (unsigned int) *size; iterator++)
+//   {
+//      availablePositions[iterator] = true;
+//      group[iterator]->setContent(
+//            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(), player_ground));
+//   }
+//}
 
-   // Initialize each cell to point to ground. Empty arena.
-   for (iterator = 0; iterator < (unsigned int) *size; iterator++)
-   {
-      availablePositions[iterator] = true;
-      group[iterator]->setContent(
-            new PlayerGround(group[iterator]->getXCordinate(), group[iterator]->getYCordinate(), player_ground));
-   }
-}
-
-static void calculateNumberOfAllPlayers(int* size, int* numberOfRobots, int* numberOfObsticles,
+static void calculateNumberOfAllPlayers(short int* size, int* numberOfRobots, int* numberOfObsticles,
       int* numberOfBlackHoles, int* numberOfTransportHoles, short int* percentRobot,
       short int* percentObstacle, short int* percentBlackHole, short int* percentTransportHole)
 {
@@ -260,35 +276,35 @@ static void calculateNumberOfAllPlayers(int* size, int* numberOfRobots, int* num
    *numberOfTransportHoles = ((totalNumberOfPlayers * (*percentTransportHole)) / 100);
 }
 
-static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
-      int* numberOfObsticles, int* numberOfBlackHoles, int* numberOfTransportHoles)
-{
-   srand((unsigned int) time(NULL));
-
-   int robots = (*numberOfRobots);
-   int obsticles = (*numberOfObsticles);
-   int blackHoles = (*numberOfBlackHoles);
-   int transportHoles = (*numberOfTransportHoles);
-
-   (void) obsticles;
-   (void) blackHoles;
-   (void) transportHoles;
-
-// TODO - This while is supposed to be for all the players but for now, its only robots
-//   while(sumOfPercentPlayers)
-   while (robots)
-   {
-      unsigned int cellNumber = (unsigned int) (rand() % (*size));
-      if (robots && (true == availablePositions[cellNumber]))
-      {
-         // TODO - This is where the logic goes to figure out the different teams and stuff.
-         // Right now it is only one type of robot
-         group[cellNumber]->deleteContent();
-         group[cellNumber]->setContent(
-               new PlayerRobot(group[cellNumber]->getXCordinate(),
-                     group[cellNumber]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
-         robots--;
-         availablePositions[cellNumber] = false;
-      }
-   }
-}
+//static void populateArena(Cell** group, bool* availablePositions, int* size, int* numberOfRobots,
+//      int* numberOfObsticles, int* numberOfBlackHoles, int* numberOfTransportHoles)
+//{
+//   srand((unsigned int) time(NULL));
+//
+//   int robots = (*numberOfRobots);
+//   int obsticles = (*numberOfObsticles);
+//   int blackHoles = (*numberOfBlackHoles);
+//   int transportHoles = (*numberOfTransportHoles);
+//
+//   (void) obsticles;
+//   (void) blackHoles;
+//   (void) transportHoles;
+//
+//// TODO - This while is supposed to be for all the players but for now, its only robots
+////   while(sumOfPercentPlayers)
+//   while (robots)
+//   {
+//      unsigned int cellNumber = (unsigned int) (rand() % (*size));
+//      if (robots && (true == availablePositions[cellNumber]))
+//      {
+//         // TODO - This is where the logic goes to figure out the different teams and stuff.
+//         // Right now it is only one type of robot
+//         group[cellNumber]->deleteContent();
+//         group[cellNumber]->setContent(
+//               new PlayerRobot(group[cellNumber]->getXCordinate(),
+//                     group[cellNumber]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
+//         robots--;
+//         availablePositions[cellNumber] = false;
+//      }
+//   }
+//}

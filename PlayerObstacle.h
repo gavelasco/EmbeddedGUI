@@ -1,11 +1,13 @@
 #ifndef PLAYEROBSTACLE_H_
 #define PLAYEROBSTACLE_H_
 
-class Player_Obstacle
+#include "Player.h"
+
+class PlayerObstacle: public Player
 {
    public:
-      Player_Obstacle();
-      virtual ~Player_Obstacle();
+      PlayerObstacle(int x, int y, Player_Type type);
+      virtual ~PlayerObstacle();
 };
 
 #endif /* PLAYEROBSTACLE_H_ */

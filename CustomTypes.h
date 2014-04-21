@@ -24,7 +24,9 @@ typedef enum
     player_robot_yellow_3,
     player_robot_yellow_4,
     player_robot_max,
-    player_ground
+    player_ground,
+    player_obstacle,
+    player_max
 } Player_Type;
 
 #endif // CUSTOMTYPES_H_INCLUDED

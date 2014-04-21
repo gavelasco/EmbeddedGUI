@@ -1,10 +1,11 @@
 #include "PlayerObstacle.h"
 
-Player_Obstacle::Player_Obstacle()
+PlayerObstacle::PlayerObstacle(int x, int y, Player_Type type)
+    : Player(x, y, type)
 {
 }
 
-Player_Obstacle::~Player_Obstacle()
+PlayerObstacle::~PlayerObstacle()
 {
 }
 
