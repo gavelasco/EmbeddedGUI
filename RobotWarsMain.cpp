@@ -54,6 +54,16 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
 //(*IdInit(RobotWarsFrame)
 const long RobotWarsFrame::ID_PANEL2 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT1 = wxNewId();
+const long RobotWarsFrame::ID_TEXTCTRL1 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT2 = wxNewId();
+const long RobotWarsFrame::ID_TEXTCTRL2 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT3 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT4 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT5 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT6 = wxNewId();
+const long RobotWarsFrame::ID_STATICTEXT7 = wxNewId();
+const long RobotWarsFrame::ID_TEXTCTRL3 = wxNewId();
 const long RobotWarsFrame::ID_BUTTON1 = wxNewId();
 const long RobotWarsFrame::ID_PANEL3 = wxNewId();
 const long RobotWarsFrame::ID_PANEL1 = wxNewId();
@@ -73,6 +83,7 @@ END_EVENT_TABLE()
 RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(this, REFRESH_TIMER_ID)
 {
     //(*Initialize(RobotWarsFrame)
+    wxFlexGridSizer* FlexGridSizer4;
     wxMenuItem* MenuItem2;
     wxFlexGridSizer* FlexGridSizer3;
     wxMenuItem* MenuItem1;
@@ -82,7 +93,7 @@ RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(th
     wxFlexGridSizer* FlexGridSizer1;
     wxMenu* Menu2;
 
-    Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
+    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     FlexGridSizer1 = new wxFlexGridSizer(0, 3, 0, 0);
     Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     FlexGridSizer2 = new wxFlexGridSizer(1, 2, 0, 0);
@@ -92,6 +103,30 @@ RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(th
     FlexGridSizer2->Add(PanelArena, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     PanelUserOptions = new wxPanel(Panel1, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
     FlexGridSizer3 = new wxFlexGridSizer(10, 1, 0, 0);
+    FlexGridSizer4 = new wxFlexGridSizer(5, 2, 0, 0);
+    StaticText1 = new wxStaticText(PanelUserOptions, ID_STATICTEXT1, _("Percent Robots"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    FlexGridSizer4->Add(StaticText1, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrl_prcntRobots = new wxTextCtrl(PanelUserOptions, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    FlexGridSizer4->Add(TextCtrl_prcntRobots, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText2 = new wxStaticText(PanelUserOptions, ID_STATICTEXT2, _("Percent Obstacles"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+    FlexGridSizer4->Add(StaticText2, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrl_obstacles = new wxTextCtrl(PanelUserOptions, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    FlexGridSizer4->Add(TextCtrl_obstacles, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText3 = new wxStaticText(PanelUserOptions, ID_STATICTEXT3, _("Percent Transport Holes"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+    FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText4 = new wxStaticText(PanelUserOptions, ID_STATICTEXT4, _("NOT IMPLEMENTED"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+    StaticText4->SetForegroundColour(wxColour(255,0,0));
+    FlexGridSizer4->Add(StaticText4, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText5 = new wxStaticText(PanelUserOptions, ID_STATICTEXT5, _("Percent Black Holes"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+    FlexGridSizer4->Add(StaticText5, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText6 = new wxStaticText(PanelUserOptions, ID_STATICTEXT6, _("NOT IMPLEMENTED"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+    StaticText6->SetForegroundColour(wxColour(255,0,0));
+    FlexGridSizer4->Add(StaticText6, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText7 = new wxStaticText(PanelUserOptions, ID_STATICTEXT7, _("Number of Cycles"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+    FlexGridSizer4->Add(StaticText7, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrl_numOfCycles = new wxTextCtrl(PanelUserOptions, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+    FlexGridSizer4->Add(TextCtrl_numOfCycles, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    FlexGridSizer3->Add(FlexGridSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonStart = new wxButton(PanelUserOptions, ID_BUTTON1, _("Start"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
     FlexGridSizer3->Add(ButtonStart, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     PanelUserOptions->SetSizer(FlexGridSizer3);
@@ -129,6 +164,45 @@ RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(th
 
    wxPaintDC dc(PanelArena);
    dc.Clear();
+
+    tinyxml2::XMLError error = doc.LoadFile("defaults.xml");
+    if (error)
+    {
+        wxString errorMessage;
+        errorMessage.Printf(wxT("File Load Error: %d"), error);
+        wxMessageBox(errorMessage);
+        exit(EXIT_FAILURE);
+    }
+
+    robotsElement = doc.FirstChildElement("UserInput")->FirstChildElement("Robots");
+    if (NULL == robotsElement)
+    {
+        wxString errorMessage;
+        errorMessage.Printf(wxT("Couldn't get Robots Element"));
+        wxMessageBox(errorMessage);
+        exit(EXIT_FAILURE);
+    }
+
+    const char* text = robotsElement->FirstChildElement("percent")->GetText();
+    wxString value_string = wxString::FromUTF8(text);
+    TextCtrl_prcntRobots->SetValue(value_string);
+
+    obsticleElement = doc.FirstChildElement("UserInput")->FirstChildElement("Obsticles");
+    if (NULL == obsticleElement)
+    {
+        wxString errorMessage;
+        errorMessage.Printf(wxT("Couldn't get Obsticles Element"));
+        wxMessageBox(errorMessage);
+        exit(EXIT_FAILURE);
+    }
+
+    text = obsticleElement->FirstChildElement("rock")->GetText();
+    value_string = wxString::FromUTF8(text);
+    TextCtrl_obstacles->SetValue(value_string);
+
+    text = doc.FirstChildElement("UserInput")->FirstChildElement("Lifetime")->FirstChildElement("cycles")->GetText();
+    value_string = wxString::FromUTF8(text);
+    TextCtrl_numOfCycles->SetValue(value_string);
 }
 
 RobotWarsFrame::~RobotWarsFrame()
@@ -170,14 +244,19 @@ void RobotWarsFrame::OnTimer(wxTimerEvent& event)
 
       wxPaintDC dc(PanelArena);
       dc.Clear();
+      delete arena;
    }
 
 }
 
 void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
 {
-   short int percentRobot = 20;
-   short int percentObstacle = 5;
+   wxString temp;
+   temp = TextCtrl_prcntRobots->GetValue();
+   short int percentRobot = wxAtoi(temp);
+
+   temp = TextCtrl_obstacles->GetValue();
+   short int percentObstacle = wxAtoi(temp);
    short int percentBlackHole = 0;
    short int percentTransportHole = 0;
 

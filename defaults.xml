@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UserInput>
+    <Robots>
+        <percent>65</percent>
+    </Robots>
+    <Obsticles>
+        <black>0</black>
+        <transport>0</transport>
+        <rock>25</rock>
+    </Obsticles>
+    <Lifetime>
+        <cycles>100</cycles>
+    </Lifetime>
+</UserInput>
