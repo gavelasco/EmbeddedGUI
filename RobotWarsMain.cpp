@@ -7,6 +7,11 @@
  * License:
  **************************************************************/
 
+ /*
+ TODO
+   Initialize lifetime and mate time with random variables.
+ */
+
 #include "wx_pch.h"
 #include "RobotWarsMain.h"
 #include <wx/msgdlg.h>
@@ -150,8 +155,24 @@ void RobotWarsFrame::OnAbout(wxCommandEvent& event)
 
 void RobotWarsFrame::OnTimer(wxTimerEvent& event)
 {
-    arena->animate();
-    RobotWarsFrame::DrawBoard();
+   Player_Type winner = arena->getWinningTeam();
+   if(player_max == winner)
+   {
+      arena->animate();
+      RobotWarsFrame::DrawBoard();
+   }
+   else
+   {
+      wxString winnerString;
+      if (player_robot_blue_1 == winner) winnerString.Printf(wxT("Blue Team!"));
+      if (player_robot_red_1 == winner) winnerString.Printf(wxT("Red Team!"));
+      if (player_robot_green_1 == winner) winnerString.Printf(wxT("Green Team!"));
+      if (player_robot_yellow_1 == winner) winnerString.Printf(wxT("Yellow Team!"));
+      wxMessageBox(winnerString , wxT("Winner!!"), wxOK, this);
+
+      refreshTimer.Stop();
+   }
+
 }
 
 void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)

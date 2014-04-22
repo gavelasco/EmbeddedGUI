@@ -75,11 +75,15 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
    std::random_shuffle(&moveOrder[0], &moveOrder[size]);
 
    short int robots = numberOfRobots;
+   numberOfRobots_blue = 0;
+   numberOfRobots_red = 0;
+   numberOfRobots_yellow = 0;
+   numberOfRobots_green = 0;
    short int obstacles = numberOfObsticles;
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    robots = 100;
+    robots = 150;
     obstacles = 0;
 
     iterator = 0;
@@ -105,24 +109,28 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
                     group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_blue_1;
+                numberOfRobots_blue++;
                 break;
 
             case player_robot_green_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
                     group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_green_1;
+                numberOfRobots_green++;
                 break;
 
             case player_robot_red_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
                     group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_red_1;
+                numberOfRobots_red++;
                 break;
 
             case player_robot_yellow_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
                     group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
+                numberOfRobots_yellow++;
                 break;
          }
 
@@ -221,17 +229,52 @@ void Arena::setCellContentToGround(int row, int column)
    group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, player_ground));
 }
 
+Player_Type Arena::getWinningTeam()
+{
+   // blue wins
+   if ((0 == numberOfRobots_red) &&
+       (0 == numberOfRobots_green) &&
+       (0 == numberOfRobots_yellow))
+         return player_robot_blue_1;
+   // red wins
+   else if ((0 == numberOfRobots_blue) &&
+             (0 == numberOfRobots_green) &&
+             (0 == numberOfRobots_yellow))
+         return player_robot_red_1;
+   // green wins
+   else if ((0 == numberOfRobots_blue) &&
+             (0 == numberOfRobots_red) &&
+             (0 == numberOfRobots_yellow))
+         return  player_robot_green_1;
+   // yellow wins
+   else if ((0 == numberOfRobots_blue) &&
+             (0 == numberOfRobots_red) &&
+             (0 == numberOfRobots_green))
+         return player_robot_yellow_1;
+   // game goes on
+   else
+      return player_max;
+
+}
+
 // FIXME - The everything to do with the robot (like life and move) should have been done within the robot
 // the arena should not tell the robot to move, it should tell the robot to take action and the robot
 // decides what to do with itself.
 void Arena::animate(void)
 {
+   numberOfRobots_blue = 0;
+   numberOfRobots_red = 0;
+   numberOfRobots_yellow = 0;
+   numberOfRobots_green = 0;
+
    // fixme - movement isn't random
    for (short int iterator = 0; iterator < size; iterator++)
    {
       PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
       // check life remaining
-      if (0 == moveBot->getTimeLifeRemaining())
+      // FIXME - nasty hack to not kill obstacles
+      if ((0 == moveBot->getTimeLifeRemaining()) && (moveBot->getPlayerType() != player_obstacle) &&
+          (moveBot->getPlayerType() != player_ground))
       {
          availablePositions[iterator] = available;
 //         content[moveBot->getXCoord()][moveBot->getYCoord()] = player_ground;
@@ -242,9 +285,6 @@ void Arena::animate(void)
 
       if (canMove == availablePositions[iterator])
       {
-//         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
-//
-//         availablePositions[iterator] = available;
          availablePositions[moveBot->move(this)] = hasMoved;
          if(group[iterator]->getContent()->getPlayerType() == moveBot->getPlayerType())
          {
@@ -254,8 +294,6 @@ void Arena::animate(void)
          {
             availablePositions[iterator] = available;
          }
-
-//         content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
       }
    }
 
@@ -266,6 +304,11 @@ void Arena::animate(void)
            availablePositions[iterator] = canMove;
        }
        content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = group[iterator]->getContent()->getPlayerType();
+
+       if(content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] == player_robot_blue_1) numberOfRobots_blue++;
+       if(content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] == player_robot_red_1) numberOfRobots_red++;
+       if(content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] == player_robot_green_1) numberOfRobots_green++;
+       if(content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] == player_robot_yellow_1) numberOfRobots_yellow++;
    }
 }
 
@@ -337,3 +380,4 @@ static void calculateNumberOfAllPlayers(short int* size, short int* numberOfRobo
 //      }
 //   }
 //}
+

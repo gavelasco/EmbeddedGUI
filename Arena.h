@@ -25,6 +25,7 @@ class Arena
       int getNumberOfObsticles(void);
       int getNumberOfBlackHoles(void);
       int getNumberOfTransportHoles(void);
+      Player_Type getWinningTeam();
       Cell* getCell(int row, int column);
 
       void setCellContentToPlayer(int row, int column, Player* player);
@@ -40,6 +41,10 @@ class Arena
       short int size;
 
       short int numberOfRobots;
+      short int numberOfRobots_blue;
+      short int numberOfRobots_red;
+      short int numberOfRobots_yellow;
+      short int numberOfRobots_green;
       short int numberOfObsticles;
       short int numberOfBlackHoles;
       short int numberOfTransportHoles;
