@@ -83,9 +83,6 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    robots = 150;
-    obstacles = 0;
-
     iterator = 0;
    while (robots || obstacles)
    {

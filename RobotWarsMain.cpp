@@ -127,12 +127,8 @@ RobotWarsFrame::RobotWarsFrame(wxWindow* parent,wxWindowID id) : refreshTimer(th
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&RobotWarsFrame::OnAbout);
     //*)
 
-    short int percentRobot = 20;
-    short int percentObstacle = 5;
-    short int percentBlackHole = 0;
-    short int percentTransportHole = 0;
-
-    arena = new Arena(TOTAL_ROWS, TOTAL_COLUMNS, percentRobot, percentObstacle, percentBlackHole, percentTransportHole);
+   wxPaintDC dc(PanelArena);
+   dc.Clear();
 }
 
 RobotWarsFrame::~RobotWarsFrame()
@@ -171,15 +167,23 @@ void RobotWarsFrame::OnTimer(wxTimerEvent& event)
       wxMessageBox(winnerString , wxT("Winner!!"), wxOK, this);
 
       refreshTimer.Stop();
-      Close();
+
+      wxPaintDC dc(PanelArena);
+      dc.Clear();
    }
 
 }
 
 void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
 {
-    RobotWarsFrame::DrawBoard();
-    refreshTimer.Start(1000, wxTIMER_CONTINUOUS);
+   short int percentRobot = 20;
+   short int percentObstacle = 5;
+   short int percentBlackHole = 0;
+   short int percentTransportHole = 0;
+
+   arena = new Arena(TOTAL_ROWS, TOTAL_COLUMNS, percentRobot, percentObstacle, percentBlackHole, percentTransportHole);
+   RobotWarsFrame::DrawBoard();
+   refreshTimer.Start(1000, wxTIMER_CONTINUOUS);
 }
 
 void RobotWarsFrame::DrawBoard()
