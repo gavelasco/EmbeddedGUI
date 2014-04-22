@@ -51,10 +51,8 @@ void PlayerRobot::decrementLife()
 int PlayerRobot::move(Arena* arena)
 {
    // TODO - also decrement other times
-//   this->decrementLife();
+   this->decrementLife();
 
-   // This will try to reproduce (0x03) first, then attack (0x02), then move (0x01),
-   // then do nothing (0x00)
    short int current_x;
    short int current_y;
    short int next_x;
@@ -70,16 +68,18 @@ int PlayerRobot::move(Arena* arena)
        south = 0x02,
        east = 0x04,
        west = 0x08,
-       doNothing = 0x10,
+       doNothing = 0x10, // Lowest priority
        move = 0x20,
        attack = 0x40,
-       reproduce = 0x80
+       reproduce = 0x80 // Highest priority
    };
 
    char moveDirection[] = {north, south, east, west};
    std::random_shuffle(&moveDirection[0], &moveDirection[4]);
    char moveTo = stay | doNothing; // least sig bytes = direction, most sig bytes = action
 
+   // Priority filter for the move. Looks at all the NSEW cells anc choses where it will
+   // move based on priority
    for (char look = 0; look < 4; look++)
    {
         Player_Type peekType;

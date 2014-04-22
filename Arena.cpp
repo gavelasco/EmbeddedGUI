@@ -79,8 +79,8 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    robots = 100;
-    obstacles = 100;
+    robots = 1;
+    obstacles = 0;
 
     iterator = 0;
    while (robots || obstacles)
@@ -103,25 +103,25 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          {
              case player_robot_blue_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 1));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 5));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_blue_1;
                 break;
 
             case player_robot_green_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 1));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 5));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_green_1;
                 break;
 
             case player_robot_red_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 1));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 5));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_red_1;
                 break;
 
             case player_robot_yellow_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 1));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 5));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
                 break;
          }
@@ -199,10 +199,12 @@ int Arena::getNumberOfObsticles(void)
 {
    return numberOfObsticles;
 }
+
 int Arena::getNumberOfBlackHoles(void)
 {
    return numberOfBlackHoles;
 }
+
 int Arena::getNumberOfTransportHoles(void)
 {
    return numberOfTransportHoles;
@@ -219,13 +221,25 @@ void Arena::setCellContentToGround(int row, int column)
    group[Arena::getCellNumber(row, column)]->setContent(new PlayerGround(row, column, player_ground));
 }
 
+// FIXME - The everything to do with the robot (like life and move) should have been done within the robot
+// the arena should not tell the robot to move, it should tell the robot to take action and the robot
+// decides what to do with itself.
 void Arena::animate(void)
 {
    for (short int iterator = 0; iterator < size; iterator++)
    {
+      PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
+      // check life remaining
+      if (0 == moveBot->getTimeLifeRemaining())
+      {
+         availablePositions[iterator] = available;
+         content[moveBot->getXCoord()][moveBot->getYCoord()] = player_ground;
+         Arena::setCellContentToPlayer(moveBot->getXCoord(), moveBot->getYCoord(),
+                                       new PlayerGround(moveBot->getXCoord(), moveBot->getYCoord(), player_ground));
+      }
+
       if (canMove == availablePositions[iterator])
       {
-         PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
          content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
 
          availablePositions[iterator] = available;
