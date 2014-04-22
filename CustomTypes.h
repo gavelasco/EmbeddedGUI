@@ -24,9 +24,9 @@ typedef enum
     player_robot_yellow_2,
     player_robot_yellow_3,
     player_robot_yellow_4,
-    player_robot_max,
-    player_ground = 0x20,
-    player_obstacle = 0x40,
+    player_robot_max = 0x20,
+    player_ground,
+    player_obstacle,
     player_max
 } Player_Type;
 

@@ -94,11 +94,11 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if (peekType & player_ground)
+            if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
             // Attack regarless of level
-            // todo implement attack and reproduce
-//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+                moveTo = moveDirection[look] | move;
             // reproduce
 //            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
         }
@@ -113,12 +113,12 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if (peekType & player_ground)
+            if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
             // Attack regarless of level
-            // todo - implement attack and reproduce
-//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
-//            // reproduce
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+                moveTo = moveDirection[look] | move;
+            // reproduce
 //            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
         }
 
@@ -132,11 +132,12 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if (peekType & player_ground)
+            if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
             // Attack regarless of level
             // todo - implement attack and reproduce
-//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+                moveTo = moveDirection[look] | move;
 //            // reproduce
 //            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
         }
@@ -151,11 +152,12 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if (peekType & player_ground)
+            if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
             // Attack regarless of level
             // todo - implement attack and reproduce
-//            if (!(peekType & this->getPlayerType())) moveTo = moveDirection[look] | attack;
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+                moveTo = moveDirection[look] | move;
 //            // reproduce
 //            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
         }
