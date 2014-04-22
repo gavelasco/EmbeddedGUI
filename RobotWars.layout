@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="Arena.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="2998" topLine="67" />
+	<File name="Arena.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="8396" topLine="227" />
 	</File>
-	<File name="Arena.h" open="1" top="0" tabpos="8">
-		<Cursor position="1236" topLine="23" />
+	<File name="Arena.h" open="0" top="0" tabpos="8">
+		<Cursor position="1236" topLine="0" />
 	</File>
 	<File name="Cell.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="626" topLine="11" />
@@ -13,13 +13,13 @@
 	<File name="Cell.h" open="0" top="0" tabpos="6">
 		<Cursor position="170" topLine="0" />
 	</File>
-	<File name="CustomTypes.h" open="1" top="0" tabpos="7">
+	<File name="CustomTypes.h" open="0" top="0" tabpos="7">
 		<Cursor position="696" topLine="0" />
 	</File>
-	<File name="Player.cpp" open="1" top="0" tabpos="4">
+	<File name="Player.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="198" topLine="0" />
 	</File>
-	<File name="Player.h" open="1" top="0" tabpos="5">
+	<File name="Player.h" open="0" top="0" tabpos="5">
 		<Cursor position="313" topLine="0" />
 	</File>
 	<File name="PlayerBlackHole.cpp" open="0" top="0" tabpos="0">
@@ -37,19 +37,19 @@
 	<File name="PlayerObstacle.h" open="0" top="0" tabpos="7">
 		<Cursor position="72" topLine="0" />
 	</File>
-	<File name="PlayerRobot.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="2758" topLine="94" />
+	<File name="PlayerRobot.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="6037" topLine="154" />
 	</File>
-	<File name="PlayerRobot.h" open="1" top="0" tabpos="9">
-		<Cursor position="666" topLine="2" />
+	<File name="PlayerRobot.h" open="0" top="0" tabpos="9">
+		<Cursor position="666" topLine="0" />
 	</File>
 	<File name="RobotWarsApp.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="677" topLine="0" />
 	</File>
-	<File name="RobotWarsMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="6011" topLine="135" />
+	<File name="RobotWarsMain.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="10826" topLine="218" />
 	</File>
-	<File name="RobotWarsMain.h" open="1" top="0" tabpos="6">
-		<Cursor position="1520" topLine="35" />
+	<File name="RobotWarsMain.h" open="1" top="0" tabpos="3">
+		<Cursor position="651" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

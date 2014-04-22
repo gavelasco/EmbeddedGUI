@@ -75,6 +75,8 @@
 		<Unit filename="RobotWarsApp.h" />
 		<Unit filename="RobotWarsMain.cpp" />
 		<Unit filename="RobotWarsMain.h" />
+		<Unit filename="tinyxml2.cpp" />
+		<Unit filename="tinyxml2.h" />
 		<Unit filename="wx_pch.h">
 			<Option compile="1" />
 			<Option weight="0" />
