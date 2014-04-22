@@ -171,6 +171,7 @@ void RobotWarsFrame::OnTimer(wxTimerEvent& event)
       wxMessageBox(winnerString , wxT("Winner!!"), wxOK, this);
 
       refreshTimer.Stop();
+      Close();
    }
 
 }

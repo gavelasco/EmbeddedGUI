@@ -17,6 +17,7 @@ class PlayerRobot: public Player
       int getTimeLifeRemaining();
 
       void decrementLife();
+      void decrementMate();
       int move(Arena* arena);
 
       virtual ~PlayerRobot();

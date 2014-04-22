@@ -103,32 +103,35 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
                          player_robot_yellow_1};
          std::random_shuffle(&team[0], &team[4]);
 
+         short int lifetime = rand() %21 + 10;
+         short int reproducetime = rand() % 4;
+
          switch (team[0])
          {
              case player_robot_blue_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 10));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, reproducetime, lifetime));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_blue_1;
                 numberOfRobots_blue++;
                 break;
 
             case player_robot_green_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 10));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, reproducetime, lifetime));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_green_1;
                 numberOfRobots_green++;
                 break;
 
             case player_robot_red_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 10));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, reproducetime, lifetime));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_red_1;
                 numberOfRobots_red++;
                 break;
 
             case player_robot_yellow_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 10));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, reproducetime, lifetime));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
                 numberOfRobots_yellow++;
                 break;

@@ -48,10 +48,16 @@ void PlayerRobot::decrementLife()
    timeLifeRemaining--;
 }
 
+void PlayerRobot::decrementMate()
+{
+   timeToReproduce--;
+}
+
 int PlayerRobot::move(Arena* arena)
 {
    // TODO - also decrement other times
    this->decrementLife();
+   this->decrementMate();
 
    short int current_x;
    short int current_y;
@@ -104,7 +110,7 @@ int PlayerRobot::move(Arena* arena)
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if (peekType & this->getPlayerType())
+            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
                moveTo = stay | reproduce;
         }
 
@@ -126,7 +132,7 @@ int PlayerRobot::move(Arena* arena)
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if (peekType & this->getPlayerType())
+            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
                moveTo = stay | reproduce;
         }
 
@@ -149,7 +155,7 @@ int PlayerRobot::move(Arena* arena)
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if (peekType & this->getPlayerType())
+            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
                moveTo = stay | reproduce;
         }
 
@@ -172,7 +178,7 @@ int PlayerRobot::move(Arena* arena)
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if (peekType & this->getPlayerType())
+            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
                moveTo = stay | reproduce;
         }
         next_x = current_x;
@@ -212,6 +218,10 @@ int PlayerRobot::move(Arena* arena)
       {
          Player_Type peekType;
 
+         srand((unsigned int) time(NULL));
+         short int lifetime = rand() % 21 + 10;
+         short int reproducetime = rand() % 4 + 1;
+
          if (moveDirection[look] == north)
          {
             next_x--;
@@ -223,7 +233,7 @@ int PlayerRobot::move(Arena* arena)
             if (peekType & player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
-                                             1, 1, 1, 10));
+                                             1, 1, reproducetime, lifetime));
                return arena->getCellNumber(next_x, next_y);
             }
          }
@@ -239,7 +249,7 @@ int PlayerRobot::move(Arena* arena)
             if (peekType & player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
-                                             1, 1, 1, 10));
+                                             1, 1, reproducetime, lifetime));
                return arena->getCellNumber(next_x, next_y);
             }
          }
@@ -255,7 +265,7 @@ int PlayerRobot::move(Arena* arena)
             if (peekType & player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
-                                             1, 1, 1, 10));
+                                             1, 1, reproducetime, lifetime));
                return arena->getCellNumber(next_x, next_y);
             }
          }
@@ -271,7 +281,7 @@ int PlayerRobot::move(Arena* arena)
             if (peekType & player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
-                                             1, 1, 1, 10));
+                                             1, 1, reproducetime, lifetime));
                return arena->getCellNumber(next_x, next_y);
             }
          }
