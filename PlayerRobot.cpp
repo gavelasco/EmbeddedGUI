@@ -76,7 +76,7 @@ int PlayerRobot::move(Arena* arena)
 
    char moveDirection[] = {north, south, east, west};
    std::random_shuffle(&moveDirection[0], &moveDirection[4]);
-   char moveTo = stay | doNothing; // least sig bytes = direction, most sig bytes = action
+   char moveTo = stay | doNothing; // least sig nibble = direction, most sig nibble = action
 
    // Priority filter for the move. Looks at all the NSEW cells anc choses where it will
    // move based on priority
@@ -96,11 +96,16 @@ int PlayerRobot::move(Arena* arena)
             // move
             if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
+
             // Attack regarless of level
+            // Logic is wrong in the second condition, it should be  peekType < player_robot_max, but it
+            // ain't working for some reason
             if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
+
             // reproduce
-//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+            if (peekType & this->getPlayerType())
+               moveTo = stay | reproduce;
         }
 
         if (moveDirection[look] == south)
@@ -115,11 +120,14 @@ int PlayerRobot::move(Arena* arena)
             // move
             if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
+
             // Attack regarless of level
             if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
+
             // reproduce
-//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+            if (peekType & this->getPlayerType())
+               moveTo = stay | reproduce;
         }
 
         if (moveDirection[look] == east)
@@ -134,12 +142,15 @@ int PlayerRobot::move(Arena* arena)
             // move
             if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
+
             // Attack regarless of level
             // todo - implement attack and reproduce
             if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
-//            // reproduce
-//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+
+            // reproduce
+            if (peekType & this->getPlayerType())
+               moveTo = stay | reproduce;
         }
 
         if (moveDirection[look] == west)
@@ -154,12 +165,15 @@ int PlayerRobot::move(Arena* arena)
             // move
             if ((peekType & player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
+
             // Attack regarless of level
             // todo - implement attack and reproduce
             if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
-//            // reproduce
-//            if (peekType & this->getPlayerType()) moveTo = stay | reproduce;
+
+            // reproduce
+            if (peekType & this->getPlayerType())
+               moveTo = stay | reproduce;
         }
         next_x = current_x;
         next_y = current_y;
@@ -190,6 +204,80 @@ int PlayerRobot::move(Arena* arena)
             next_y--;
             if(0 > next_y) next_y = (arena->getNumberOfColumns() - 1);
         }
+    }
+
+    if ((moveTo & reproduce) == reproduce)
+    {// Look for first available ground
+      for (char look = 0; look < 4; look++)
+      {
+         Player_Type peekType;
+
+         if (moveDirection[look] == north)
+         {
+            next_x--;
+            if (0 > next_x)
+               next_x = arena->getNumberOfRows() - 1;
+
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
+
+            if (peekType & player_ground)
+            {
+               arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
+                                             1, 1, 1, 10));
+               return arena->getCellNumber(next_x, next_y);
+            }
+         }
+
+         if (moveDirection[look] == south)
+         {
+            next_x++;
+            if((arena->getNumberOfRows() - 1) < next_x)
+               next_x = 0;
+
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
+
+            if (peekType & player_ground)
+            {
+               arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
+                                             1, 1, 1, 10));
+               return arena->getCellNumber(next_x, next_y);
+            }
+         }
+
+         if (moveDirection[look] == east)
+         {
+            next_y++;
+            if((arena->getNumberOfColumns() - 1) < next_y)
+               next_y = 0;
+
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
+
+            if (peekType & player_ground)
+            {
+               arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
+                                             1, 1, 1, 10));
+               return arena->getCellNumber(next_x, next_y);
+            }
+         }
+
+         if (moveDirection[look] == west)
+         {
+            next_y--;
+            if(0 > next_y)
+               next_y = (arena->getNumberOfColumns() - 1);
+
+            peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
+
+            if (peekType & player_ground)
+            {
+               arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
+                                             1, 1, 1, 10));
+               return arena->getCellNumber(next_x, next_y);
+            }
+         }
+         next_x = current_x;
+         next_y = current_y;
+      }
     }
 
    arena->setCellContentToPlayer(next_x, next_y, this);

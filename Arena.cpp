@@ -79,7 +79,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    robots = 1;
+    robots = 100;
     obstacles = 0;
 
     iterator = 0;
@@ -103,25 +103,25 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
          {
              case player_robot_blue_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 5));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_blue_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_blue_1;
                 break;
 
             case player_robot_green_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 5));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_green_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_green_1;
                 break;
 
             case player_robot_red_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 5));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_red_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_red_1;
                 break;
 
             case player_robot_yellow_1:
                 group[moveOrder[iterator]]->setContent(new PlayerRobot(group[moveOrder[iterator]]->getXCordinate(),
-                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 5));
+                    group[moveOrder[iterator]]->getYCordinate(), player_robot_yellow_1, 1, 1, 1, 10));
                 content[group[moveOrder[iterator]]->getXCordinate()][group[moveOrder[iterator]]->getYCordinate()] = player_robot_yellow_1;
                 break;
          }
@@ -226,6 +226,7 @@ void Arena::setCellContentToGround(int row, int column)
 // decides what to do with itself.
 void Arena::animate(void)
 {
+   // fixme - movement isn't random
    for (short int iterator = 0; iterator < size; iterator++)
    {
       PlayerRobot* moveBot = (PlayerRobot*) group[iterator]->getContent();
@@ -233,18 +234,28 @@ void Arena::animate(void)
       if (0 == moveBot->getTimeLifeRemaining())
       {
          availablePositions[iterator] = available;
-         content[moveBot->getXCoord()][moveBot->getYCoord()] = player_ground;
+//         content[moveBot->getXCoord()][moveBot->getYCoord()] = player_ground;
          Arena::setCellContentToPlayer(moveBot->getXCoord(), moveBot->getYCoord(),
                                        new PlayerGround(moveBot->getXCoord(), moveBot->getYCoord(), player_ground));
+         continue;
       }
 
       if (canMove == availablePositions[iterator])
       {
-         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
-
-         availablePositions[iterator] = available;
+//         content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = player_ground;
+//
+//         availablePositions[iterator] = available;
          availablePositions[moveBot->move(this)] = hasMoved;
-         content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
+         if(group[iterator]->getContent()->getPlayerType() == moveBot->getPlayerType())
+         {
+            availablePositions[iterator] = hasMoved;
+         }
+         else
+         {
+            availablePositions[iterator] = available;
+         }
+
+//         content[moveBot->getXCoord()][moveBot->getYCoord()] = moveBot->getPlayerType();
       }
    }
 
@@ -254,6 +265,7 @@ void Arena::animate(void)
        {
            availablePositions[iterator] = canMove;
        }
+       content[group[iterator]->getXCordinate()][group[iterator]->getYCordinate()] = group[iterator]->getContent()->getPlayerType();
    }
 }
 
