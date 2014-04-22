@@ -100,17 +100,17 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if ((peekType & player_ground) && (moveTo < move))
+            if ((peekType == player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
 
             // Attack regarless of level
             // Logic is wrong in the second condition, it should be  peekType < player_robot_max, but it
             // ain't working for some reason
-            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (peekType != player_ground) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
+            if ((peekType == this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce) && (peekType != player_obstacle) && (peekType != player_ground))
                moveTo = stay | reproduce;
         }
 
@@ -124,15 +124,15 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if ((peekType & player_ground) && (moveTo < move))
+            if ((peekType == player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
 
             // Attack regarless of level
-            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (peekType != player_ground) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
+            if ((peekType == this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce) && (peekType != player_obstacle) && (peekType != player_ground))
                moveTo = stay | reproduce;
         }
 
@@ -146,16 +146,16 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if ((peekType & player_ground) && (moveTo < move))
+            if ((peekType == player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
 
             // Attack regarless of level
             // todo - implement attack and reproduce
-            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (peekType != player_ground) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
+            if ((peekType == this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce) && (peekType != player_obstacle) && (peekType != player_ground))
                moveTo = stay | reproduce;
         }
 
@@ -169,16 +169,16 @@ int PlayerRobot::move(Arena* arena)
             // comparison is done only on level 1 of each color
             // Each if increases in priority
             // move
-            if ((peekType & player_ground) && (moveTo < move))
+            if ((peekType == player_ground) && (moveTo < move))
                 moveTo = moveDirection[look] | move;
 
             // Attack regarless of level
             // todo - implement attack and reproduce
-            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (moveTo < attack))
+            if ((peekType != this->getPlayerType()) && (peekType != player_obstacle) && (peekType != player_ground) && (moveTo < attack))
                 moveTo = moveDirection[look] | move;
 
             // reproduce
-            if ((peekType & this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce))
+            if ((peekType == this->getPlayerType()) && (timeToReproduce <= 0) && (moveTo < reproduce) && (peekType != player_obstacle) && (peekType != player_ground))
                moveTo = stay | reproduce;
         }
         next_x = current_x;
@@ -230,7 +230,7 @@ int PlayerRobot::move(Arena* arena)
 
             peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-            if (peekType & player_ground)
+            if (peekType == player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
                                              1, 1, reproducetime, lifetime));
@@ -246,7 +246,7 @@ int PlayerRobot::move(Arena* arena)
 
             peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-            if (peekType & player_ground)
+            if (peekType == player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
                                              1, 1, reproducetime, lifetime));
@@ -262,7 +262,7 @@ int PlayerRobot::move(Arena* arena)
 
             peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-            if (peekType & player_ground)
+            if (peekType == player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
                                              1, 1, reproducetime, lifetime));
@@ -278,7 +278,7 @@ int PlayerRobot::move(Arena* arena)
 
             peekType = arena->getCell(next_x, next_y)->getContent()->getPlayerType();
 
-            if (peekType & player_ground)
+            if (peekType == player_ground)
             {
                arena->setCellContentToPlayer(next_x, next_y, new PlayerRobot(next_x, next_y, this->getPlayerType(),
                                              1, 1, reproducetime, lifetime));
@@ -289,6 +289,8 @@ int PlayerRobot::move(Arena* arena)
          next_y = current_y;
       }
     }
+
+   if ((moveTo & reproduce) == reproduce) return arena->getCellNumber(current_x, current_y);
 
    arena->setCellContentToPlayer(next_x, next_y, this);
    arena->setCellContentToGround(current_x, current_y);

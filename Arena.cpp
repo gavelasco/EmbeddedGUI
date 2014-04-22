@@ -83,7 +83,7 @@ Arena::Arena(short int row, short int column, short int percentRobot, short int 
 //   int blackHoles = (*numberOfBlackHoles);
 //   int transportHoles = (*numberOfTransportHoles);
 
-    iterator = 0;
+   iterator = 0;
    while (robots || obstacles)
    {
       if (robots && (available == availablePositions[moveOrder[iterator]]))
@@ -254,7 +254,6 @@ Player_Type Arena::getWinningTeam()
    // game goes on
    else
       return player_max;
-
 }
 
 // FIXME - The everything to do with the robot (like life and move) should have been done within the robot
