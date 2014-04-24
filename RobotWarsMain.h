@@ -78,6 +78,7 @@ class RobotWarsFrame: public wxFrame
         //*)
 
         Arena* arena;
+        int numberOfCycles;
 
         wxTimer refreshTimer;
         void OnTimer(wxTimerEvent& event);

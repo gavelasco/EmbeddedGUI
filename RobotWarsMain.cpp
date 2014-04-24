@@ -226,7 +226,16 @@ void RobotWarsFrame::OnAbout(wxCommandEvent& event)
 void RobotWarsFrame::OnTimer(wxTimerEvent& event)
 {
    Player_Type winner = arena->getWinningTeam();
-   if(player_max == winner)
+   if (0 >= numberOfCycles)
+   {
+      wxMessageBox(wxT("Draw!!"));
+      refreshTimer.Stop();
+
+      wxPaintDC dc(PanelArena);
+      dc.Clear();
+      delete arena;
+   }
+   if (player_max == winner)
    {
       arena->animate();
       RobotWarsFrame::DrawBoard();
@@ -247,6 +256,7 @@ void RobotWarsFrame::OnTimer(wxTimerEvent& event)
       delete arena;
    }
 
+   numberOfCycles--;
 }
 
 void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
@@ -259,6 +269,9 @@ void RobotWarsFrame::OnButtonStartClick(wxCommandEvent& event)
    short int percentObstacle = wxAtoi(temp);
    short int percentBlackHole = 0;
    short int percentTransportHole = 0;
+
+   temp = TextCtrl_numOfCycles->GetValue();
+   numberOfCycles = wxAtoi(temp);
 
    arena = new Arena(TOTAL_ROWS, TOTAL_COLUMNS, percentRobot, percentObstacle, percentBlackHole, percentTransportHole);
    RobotWarsFrame::DrawBoard();
